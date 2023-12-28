@@ -2,7 +2,7 @@
 I created a program that gets information from a GitHub repository. Specifically, it looks for repositories related to "Flutter" using the GitHub API. After finding the data through the API, the app stores it in a local database for offline access. I also implemented pagination to continuously load more data.
 
 
-----------```Swipe to Scroll```--------------------```Sorting```----------------------```Details```--------
+------```Swipe to Scroll```--------------```Sorting```----------------```Details```--------
 <img src="images/unlimited_scroll.gif" height="400" width="200" title = "Swipe to Scroll">   <img src="images/sorting.gif" height="400" width="200" title = "Sorting">    <img src="images/details_page.gif" height="400" width="200" title = "Details">
 
 

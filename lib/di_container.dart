@@ -2,10 +2,10 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:github_repo_app/data/data_source/local/app_database.dart';
+import 'package:github_repo_app/data/data_source/remote/chach_interceptor.dart';
 import 'package:github_repo_app/data/data_source/remote/dio_client.dart';
 import 'package:github_repo_app/data/repository/article_repository_impl.dart';
 import 'package:github_repo_app/data/repository/base/repo_repository.dart';
-import 'package:github_repo_app/data/usecase/get_local_repo.dart';
 import 'package:github_repo_app/data/usecase/get_repo.dart';
 import 'package:github_repo_app/provider/repo_provider.dart';
 
@@ -21,25 +21,23 @@ Future<void> init() async {
 
   //base
   sl.registerSingleton<Dio>(Dio());
-  sl.registerLazySingleton(() => DioClient(dio: sl(), baseUrl: githubAPIBaseURL));
+  sl.registerLazySingleton(() => CacheInterceptor(appDatabase: sl()));
+  sl.registerLazySingleton(() => DioClient(dio: sl(),  baseUrl: githubAPIBaseURL,cacheInterceptor: sl() ));
 
   // Dependencies
   sl.registerSingleton<RepoRepository>(
-      RepoRepositoryImpl(sl(),sl())
+      RepoRepositoryImpl(sl())
   );
 
   //UseCases
   sl.registerSingleton<GetRepoUseCase>(
       GetRepoUseCase(sl())
   );
-  sl.registerSingleton<GetSavedRepoUseCase>(
-      GetSavedRepoUseCase(sl())
-  );
+
 
   // Provider
   sl.registerFactory(() => RepoProvider(
-      getRepoUseCase: sl(),
-    getSavedRepoUseCase: sl()
+      getRepoUseCase: sl()
   ));
 
 }

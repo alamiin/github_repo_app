@@ -10,10 +10,10 @@ abstract class RepoRepository {
   // API methods
   Future<DataState<RepoResponse>> getGithubRepo(int pageNo);
 
-  // Database methods
-  Future < List < RepoModel >> getSavedRepo();
-
-  Future < void > saveRepo(RepoEntity repoEntity);
+  // // Database methods
+  // Future < List < RepoModel >> getSavedRepo();
+  //
+  // Future < void > saveRepo(RepoEntity repoEntity);
 
   // Future < void > removeArticle(RepoEntity repoEntity);
 }

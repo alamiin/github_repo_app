@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `repo` (`id` INTEGER, `pageNo` INTEGER, `name` TEXT, `repoName` TEXT, `avatarUrl` TEXT, `description` TEXT, `stars` INTEGER, `updatedAt` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `cache` (`id` INTEGER, `code` INTEGER, `url` TEXT, `data` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -104,32 +104,24 @@ class _$RepoDao extends RepoDao {
     this.database,
     this.changeListener,
   )   : _queryAdapter = QueryAdapter(database),
-        _repoModelInsertionAdapter = InsertionAdapter(
+        _cacheModelInsertionAdapter = InsertionAdapter(
             database,
-            'repo',
-            (RepoModel item) => <String, Object?>{
+            'cache',
+            (CacheModel item) => <String, Object?>{
                   'id': item.id,
-                  'pageNo': item.pageNo,
-                  'name': item.name,
-                  'repoName': item.repoName,
-                  'avatarUrl': item.avatarUrl,
-                  'description': item.description,
-                  'stars': item.stars,
-                  'updatedAt': item.updatedAt
+                  'code': item.code,
+                  'url': item.url,
+                  'data': item.data
                 }),
-        _repoModelUpdateAdapter = UpdateAdapter(
+        _cacheModelUpdateAdapter = UpdateAdapter(
             database,
-            'repo',
+            'cache',
             ['id'],
-            (RepoModel item) => <String, Object?>{
+            (CacheModel item) => <String, Object?>{
                   'id': item.id,
-                  'pageNo': item.pageNo,
-                  'name': item.name,
-                  'repoName': item.repoName,
-                  'avatarUrl': item.avatarUrl,
-                  'description': item.description,
-                  'stars': item.stars,
-                  'updatedAt': item.updatedAt
+                  'code': item.code,
+                  'url': item.url,
+                  'data': item.data
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -138,46 +130,29 @@ class _$RepoDao extends RepoDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<RepoModel> _repoModelInsertionAdapter;
+  final InsertionAdapter<CacheModel> _cacheModelInsertionAdapter;
 
-  final UpdateAdapter<RepoModel> _repoModelUpdateAdapter;
+  final UpdateAdapter<CacheModel> _cacheModelUpdateAdapter;
 
   @override
-  Future<List<RepoModel>> getAllRepo() async {
-    return _queryAdapter.queryList('SELECT * FROM repo',
-        mapper: (Map<String, Object?> row) => RepoModel(
+  Future<CacheModel?> getCache(String url) async {
+    return _queryAdapter.query('SELECT * FROM cache WHERE url = ?1',
+        mapper: (Map<String, Object?> row) => CacheModel(
             id: row['id'] as int?,
-            pageNo: row['pageNo'] as int?,
-            name: row['name'] as String?,
-            repoName: row['repoName'] as String?,
-            avatarUrl: row['avatarUrl'] as String?,
-            description: row['description'] as String?,
-            stars: row['stars'] as int?,
-            updatedAt: row['updatedAt'] as String?));
+            code: row['code'] as int?,
+            url: row['url'] as String?,
+            data: row['data'] as String?),
+        arguments: [url]);
   }
 
   @override
-  Future<RepoModel?> getRepo(int id) async {
-    return _queryAdapter.query('SELECT * FROM repo WHERE id = ?1',
-        mapper: (Map<String, Object?> row) => RepoModel(
-            id: row['id'] as int?,
-            pageNo: row['pageNo'] as int?,
-            name: row['name'] as String?,
-            repoName: row['repoName'] as String?,
-            avatarUrl: row['avatarUrl'] as String?,
-            description: row['description'] as String?,
-            stars: row['stars'] as int?,
-            updatedAt: row['updatedAt'] as String?),
-        arguments: [id]);
+  Future<void> insertCache(CacheModel cacheModel) async {
+    await _cacheModelInsertionAdapter.insert(
+        cacheModel, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> insertRepo(RepoModel repo) async {
-    await _repoModelInsertionAdapter.insert(repo, OnConflictStrategy.abort);
-  }
-
-  @override
-  Future<void> updateRepo(RepoModel repo) async {
-    await _repoModelUpdateAdapter.update(repo, OnConflictStrategy.abort);
+  Future<void> updateCache(CacheModel cacheModel) async {
+    await _cacheModelUpdateAdapter.update(cacheModel, OnConflictStrategy.abort);
   }
 }

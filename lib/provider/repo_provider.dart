@@ -2,15 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:github_repo_app/core/resources/data_state.dart';
 import 'package:github_repo_app/data/models/base/repo.dart';
 import 'package:github_repo_app/data/models/repo.dart';
-import 'package:github_repo_app/data/usecase/get_local_repo.dart';
 import 'package:github_repo_app/data/usecase/get_repo.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 
 class RepoProvider with ChangeNotifier {
   final GetRepoUseCase getRepoUseCase;
-  final GetSavedRepoUseCase getSavedRepoUseCase;
-  RepoProvider( {required this.getRepoUseCase, required this.getSavedRepoUseCase});
+  RepoProvider( {required this.getRepoUseCase});
 
 
   bool isLoading = false;
@@ -26,15 +24,15 @@ class RepoProvider with ChangeNotifier {
 
     updateLoader(true);
 
-    bool hasInternet = await InternetConnectionChecker().hasConnection;
-    if(hasInternet == false){
-      final savedDataState = await getSavedRepoUseCase();
-      if ( savedDataState.isNotEmpty) {
-        repoList = savedDataState ;
-      }
-      updateLoader(false);
-      return;
-    }
+    // bool hasInternet = await InternetConnectionChecker().hasConnection;
+    // if(hasInternet == false){
+    //   final savedDataState = await getSavedRepoUseCase();
+    //   if ( savedDataState.isNotEmpty) {
+    //     repoList = savedDataState ;
+    //   }
+    //   updateLoader(false);
+    //   return;
+    // }
 
     pageCounter = 1;
     final dataState = await getRepoUseCase(params: pageCounter);
@@ -46,7 +44,7 @@ class RepoProvider with ChangeNotifier {
     }
 
     if (dataState is DataFailed) {
-      message = dataState.error!.message;
+      message = dataState.error!.message!;
     }
 
     updateLoader(false);
@@ -80,7 +78,7 @@ class RepoProvider with ChangeNotifier {
     }
 
     if (dataState is DataFailed) {
-      message = dataState.error!.message;
+      message = dataState.error!.message!;
     }
 
     updateBottomLoader(false);

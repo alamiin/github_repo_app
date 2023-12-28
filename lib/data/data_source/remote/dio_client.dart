@@ -1,21 +1,19 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'chach_interceptor.dart';
 
 
 class DioClient {
   final String baseUrl;
-
   final Dio dio;
-  DioClient({required this.baseUrl, required this.dio}) {
+  final CacheInterceptor cacheInterceptor;
+  DioClient( {required this.baseUrl, required this.dio, required this.cacheInterceptor}) {
     dio
       ..options.baseUrl = baseUrl
-      ..options.connectTimeout = 3000
-      ..options.receiveTimeout = 3000
+      ..options.connectTimeout = const Duration(milliseconds: 3000)
+      ..options.receiveTimeout = const Duration(milliseconds: 3000)
       ..httpClientAdapter
-      ..options.headers = {
-        'Content-Type': 'application/json; charset=UTF-8',
-      };
+      ..interceptors.add(cacheInterceptor);
   }
 
   Future<Response> get( {required String uri, required Map<String, dynamic> queryParameters,}) async {

@@ -14,10 +14,8 @@ import 'base/repo_repository.dart';
 
 class RepoRepositoryImpl implements RepoRepository {
 
-
   final DioClient _dioClient;
-  final AppDatabase _appDatabase;
-  RepoRepositoryImpl(this._dioClient, this._appDatabase);
+  RepoRepositoryImpl(this._dioClient);
 
   @override
   Future<DataState<RepoResponse>> getGithubRepo(int pageNo) async {
@@ -34,40 +32,20 @@ class RepoRepositoryImpl implements RepoRepository {
 
     if (httpResponse.statusCode == HttpStatus.ok) {
       final successRepoData = RepoResponse.fromJson(httpResponse.data, pageNo);
-      if(successRepoData.items!.isNotEmpty){
-        successRepoData.items!.forEach((element) async {
-          RepoModel? searchData = await _appDatabase.repoDao.getRepo(element.id!);
-          if(searchData == null){
-            await _appDatabase.repoDao.insertRepo(element);
-          }else{
-            await _appDatabase.repoDao.updateRepo(element);
-          }
-        });
-      }
       return DataSuccess(successRepoData);
     } else {
       return DataFailed(
-        DioError(
+          DioException(
           error: httpResponse.statusMessage,
           response: httpResponse,
-          type: DioErrorType.response,
+          type: DioExceptionType.unknown,
           requestOptions: httpResponse.requestOptions
         )
       );
     }
-   } on DioError catch(e){
+   } on DioException catch(e){
     return DataFailed(e);
    }
-  }
-
-  @override
-  Future<List<RepoModel>> getSavedRepo() async {
-    return _appDatabase.repoDao.getAllRepo();
-  }
-
-  @override
-  Future<void> saveRepo(RepoEntity repoEntity) {
-    return _appDatabase.repoDao.insertRepo(RepoModel.fromEntity(repoEntity));
   }
 
 }

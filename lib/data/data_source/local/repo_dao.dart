@@ -1,19 +1,17 @@
 import 'package:floor/floor.dart';
 import 'package:github_repo_app/data/models/repo.dart';
 
+import '../../models/dio_cache.dart';
+
 @dao
 abstract class RepoDao {
-  
   @Insert()
-  Future<void> insertRepo(RepoModel repo);
+  Future<void> insertCache(CacheModel cacheModel);
 
-  @Query('SELECT * FROM repo')
-  Future<List<RepoModel>> getAllRepo();
-
-  @Query('SELECT * FROM repo WHERE id = :id')
-  Future<RepoModel?> getRepo(int id);
+  @Query('SELECT * FROM cache WHERE url = :url')
+  Future<CacheModel?> getCache(String url);
 
   @update
-  Future<void> updateRepo(RepoModel repo);
+  Future<void> updateCache(CacheModel cacheModel);
 
 }
