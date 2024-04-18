@@ -1,13 +1,13 @@
 
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:github_repo_app/app/data/data_source/local/app_database.dart';
-import 'package:github_repo_app/app/data/data_source/remote/chach_interceptor.dart';
-import 'package:github_repo_app/app/data/data_source/remote/dio_client.dart';
-import 'package:github_repo_app/app/data/repository/article_repository_impl.dart';
-import 'package:github_repo_app/app/data/repository/base/repo_repository.dart';
-import 'package:github_repo_app/app/data/usecase/get_repo.dart';
-import 'package:github_repo_app/app/provider/repo_provider.dart';
+import 'package:github_repo_app/app/features/search_repo/data/data_source/local/app_database.dart';
+import 'package:github_repo_app/app/features/search_repo/data/data_source/remote/chach_interceptor.dart';
+import 'package:github_repo_app/app/features/search_repo/data/data_source/remote/dio_client.dart';
+import 'package:github_repo_app/app/features/search_repo/data/repository/article_repository_impl.dart';
+import 'package:github_repo_app/app/features/search_repo/domain/repository/repo_repository.dart';
+import 'package:github_repo_app/app/features/search_repo/domain/usecase/get_repo.dart';
+import 'package:github_repo_app/app/features/search_repo/presentation/provider/repo_provider.dart';
 
 
 

@@ -8,7 +8,7 @@ import 'package:github_repo_app/app/di_container.dart' as di;
 
 import 'app/config/theme/light_theme.dart';
 import 'app/my_app.dart';
-import 'app/provider/repo_provider.dart';
+import 'app/features/search_repo/presentation/provider/repo_provider.dart';
 
 Future<void> main() async {
 

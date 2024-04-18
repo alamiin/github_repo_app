@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:github_repo_app/app/data/models/repo.dart';
-import 'package:github_repo_app/app/ui/all_repo/all_repo_screen.dart';
-import 'package:github_repo_app/app/ui/details_repo/details_repo_screen.dart';
+import 'package:github_repo_app/app/features/search_repo/data/model/repo.dart';
+import 'package:github_repo_app/app/features/search_repo/presentation/pages/all_repo/all_repo_screen.dart';
+import 'package:github_repo_app/app/features/search_repo/presentation/pages/details_repo/details_repo_screen.dart';
 
 
 

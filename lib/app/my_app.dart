@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:github_repo_app/app/features/search_repo/presentation/pages/all_repo/all_repo_screen.dart';
 import 'package:provider/provider.dart';
 import '../flavors/build_config.dart';
 import '../flavors/env_config.dart';
 import 'config/route/app_route.dart';
-import 'provider/repo_provider.dart';
-import 'ui/all_repo/all_repo_screen.dart';
+import 'features/search_repo/presentation/provider/repo_provider.dart';
 import 'package:github_repo_app/app/di_container.dart' as di;
 
 
